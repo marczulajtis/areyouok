@@ -8,6 +8,8 @@ import { Alegreya_400Regular } from '@expo-google-fonts/dev'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 
+import HomeScreen from './components/screens/home-screen'
+import RegisterScreen from './components/screens/register-screen'
 import LoginScreen from './components/screens/login-screen'
 
 const Stack = createNativeStackNavigator()
@@ -46,8 +48,10 @@ export default function App() {
     if (appIsReady) {
         return (
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login">
+                <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen name="Home" component={HomeScreen} />
                     <Stack.Screen name="Login" component={LoginScreen} />
+                    <Stack.Screen name="Register" component={RegisterScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         )
