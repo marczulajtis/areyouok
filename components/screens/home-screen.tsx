@@ -1,34 +1,35 @@
+import { Button, Flex } from '@react-native-material/core'
 import React from 'react'
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import commonStyles from '../../common/common-styles'
 
 const HomeScreen = ({ navigation }) => {
     return (
-        <View style={commonStyles.container}>
+        <Flex style={commonStyles.container}>
             <Image
                 source={require('../../assets/logo.png')}
                 style={homeStyles.image}
                 resizeMode="cover"
-            ></Image>
+            />
 
-            <Pressable
+            <Button
                 onPress={() => navigation.navigate('Login')}
                 accessibilityLabel="Log in to Are you ok"
                 style={commonStyles.button}
-            >
-                <Text style={commonStyles.buttonText}>Login</Text>
-            </Pressable>
+                title="Login"
+                color="#F454F9"
+            />
 
-            <Pressable
+            <Button
                 onPress={() => {
                     navigation.navigate('Register')
                 }}
                 accessibilityLabel="Register to Are you ok"
                 style={commonStyles.button}
-            >
-                <Text style={commonStyles.buttonText}>Register</Text>
-            </Pressable>
-        </View>
+                title="Register"
+                color="#F454F9"
+            />
+        </Flex>
     )
 }
 
