@@ -9,12 +9,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 
 import HomeScreen from './components/screens/home-screen'
-import RegisterScreen from './components/screens/register-screen'
-import LoginScreen from './components/screens/login-screen'
+import { awsconfig } from './utils/cognito-pool'
+import { Amplify } from 'aws-amplify'
+import { WelcomeScreen } from './components/screens/welcome-screen'
+import { LoginScreen } from './components/screens/login-screen'
+import { RegisterScreen } from './components/screens/register-screen'
 
 const Stack = createNativeStackNavigator()
 
 export default function App() {
+    Amplify.configure(awsconfig)
+
     const [appIsReady, setAppIsReady] = useState(false)
 
     const customFonts = {
@@ -52,6 +57,7 @@ export default function App() {
                     <Stack.Screen name="Home" component={HomeScreen} />
                     <Stack.Screen name="Login" component={LoginScreen} />
                     <Stack.Screen name="Register" component={RegisterScreen} />
+                    <Stack.Screen name="Welcome" component={WelcomeScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         )

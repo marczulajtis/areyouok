@@ -1,7 +1,8 @@
-import { CognitoUserPool } from 'amazon-cognito-identity-js'
 import { CLIENT_ID, USER_POOL_ID } from '../env'
-const poolData = {
-    UserPoolId: USER_POOL_ID,
-    ClientId: CLIENT_ID,
+export const awsconfig = {
+    Auth: {
+        userPoolId: USER_POOL_ID,
+        userPoolWebClientId: CLIENT_ID,
+        region: 'eu-west-1',
+    },
 }
-export const cognitoPool = new CognitoUserPool(poolData)

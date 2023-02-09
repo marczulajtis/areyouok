@@ -1,37 +1,31 @@
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
+    colors: { color: '#737373' },
     container: {
         flex: 1,
         backgroundColor: '#D9D9D9',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#737373',
     },
     button: {
-        backgroundColor: '#737373',
-        borderRadius: 100,
-        width: 200,
-        padding: 20,
+        backgroundColor: '#FA90AC',
+        borderRadius: 5,
+        width: 150,
+        padding: 10,
         marginTop: 20,
+        textTransform: 'uppercase',
     },
     buttonText: {
         color: '#FFD7D2',
         textAlign: 'center',
-        fontSize: 20,
-        textDecorationLine: 'underline',
-        fontFamily: 'alegreya-regular',
+        fontSize: 16,
     },
     textInput: {
-        borderRadius: 15,
-        width: 200,
-        padding: 10,
-        fontSize: 15,
         marginBottom: 10,
-        marginTop: 5,
-        borderColor: '#737373',
-        borderWidth: 2,
-        fontFamily: 'alegreya-regular',
+        width: '50%',
+        fontSize: 10,
+        borderColor: 'gray',
     },
     hint: {
         fontSize: 10,

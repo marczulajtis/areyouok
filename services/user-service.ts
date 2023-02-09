@@ -1,33 +1,39 @@
-import { Auth } from '@aws-amplify/auth/lib-esm/Auth'
-import { Alert } from 'react-native'
-import { dictionary } from '../hooks/dictionary'
-import { cognitoPool } from '../utils/cognito-pool'
+import { UserRegister } from '../models/user-register'
+import { Auth } from '@aws-amplify/auth'
 
-export const onPressRegister = (
+export const signUp = async (navigation: any, userRegister: UserRegister) => {
+    try {
+        await Auth.signUp({
+            username: userRegister.userName,
+            password: userRegister.password,
+            attributes: {
+                email: userRegister.email,
+                phone_number: userRegister.phone,
+            },
+            autoSignIn: {
+                // optional - enables auto sign in after user is confirmed
+                enabled: false,
+            },
+        }).then(() => {
+            navigation.navigate('Login')
+        })
+    } catch (error) {
+        console.log('error signing up:', error)
+    }
+}
+
+export const signIn = async (
     navigation: any,
-    email: string,
+    userName: string,
     password: string
 ) => {
-    const { Auth, General } = dictionary
+    try {
+        await Auth.signIn(userName, password).then((user) => {
+            console.log('signedIn: ', user)
 
-    cognitoPool.signUp(email, password, [], [], (err, data) => {
-        if (err) {
-            switch (err.name) {
-                case 'InvalidParameterException':
-                    return Alert.alert(General.Error, Auth.InvalidEmail)
-                case 'InvalidPasswordException':
-                    return Alert.alert(General.Error, Auth.InvalidPassword)
-                case 'UsernameExistsException':
-                    return Alert.alert(General.Error, Auth.EmailAlreadyExists)
-                default:
-                    return Alert.alert(
-                        General.Error,
-                        General.SomethingWentWrong
-                    )
-            }
-        }
-        Alert.alert(General.Success, Auth.ConfirmEmail, [
-            { text: 'OK', onPress: () => navigation.navigate('Login') },
-        ])
-    })
+            navigation.navigate('Welcome', { user })
+        })
+    } catch (error) {
+        console.log('error signing in: ', error)
+    }
 }

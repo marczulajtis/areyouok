@@ -1,88 +1,105 @@
-import React from 'react'
-import { Image, Pressable, Text, TextInput, View } from 'react-native'
+import React, { useCallback } from 'react'
+import { Image, View } from 'react-native'
 import styles from '../../common/common-styles'
-import { onPressRegister } from '../../services/user-service'
+import { signUp } from '../../services/user-service'
+import { Formik } from 'formik'
+import { UserRegister } from '../../models/user-register'
+import { Button, TextInput } from '@react-native-material/core'
+import commonStyles from '../../common/common-styles'
+import Icon from '@expo/vector-icons/MaterialCommunityIcons'
 
-const RegisterScreen = ({ navigation }) => {
-    const [password, setPassword] = React.useState('')
-    const [email, setEmail] = React.useState('')
-    const [confirmPassword, setConfirmPassword] = React.useState('')
-
-    let confirmPasswordError = ''
-
-    const validateConfirmPassword = () => {
-        if (password !== confirmPassword) {
-            confirmPasswordError = 'Passwords do not match'
-        }
-    }
-
-    const validatePassword = () => {
-        console.log('Password validated')
-    }
-
-    const passwordDefinition = `- At least one digit [0-9] \n
-    - At least one lowercase character [a-z] \n
-    - At least one uppercase character [A-Z] \n
-    - At least one special character [*.!@#$%^&(){}[]:;<>,.?/~_+-=|\] \n
-    - At least 8 characters in length, but no more than 32.`
+export const RegisterScreen = ({ navigation }) => {
+    const onSubmit = useCallback((user: UserRegister) => {
+        signUp(navigation, user)
+    }, [])
 
     return (
-        <View style={styles.container}>
-            <Image
-                source={require('../../assets/logo.png')}
-                style={styles.cornerImage}
-                resizeMode="cover"
-            ></Image>
+        <Formik
+            initialValues={{
+                email: '',
+                userName: '',
+                password: '',
+                phone: '',
+                confirmPassword: '',
+                passwordMatch: false,
+            }}
+            onSubmit={(user) => onSubmit(user)}
+        >
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+                <View style={styles.container}>
+                    <Image
+                        source={require('../../assets/logo.png')}
+                        style={styles.cornerImage}
+                        resizeMode="cover"
+                    />
 
-            <Text style={styles.label}>E-mail address</Text>
-            <TextField
-                style={styles.textInput}
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <UserIcon />
-                        </InputAdornment>
-                    ),
-                }}
-            />
+                    <TextInput
+                        variant="standard"
+                        value={values.userName}
+                        style={commonStyles.textInput}
+                        color={commonStyles.colors.color}
+                        trailing={<Icon name="account" />}
+                        onChangeText={handleChange('userName')}
+                        onBlur={handleBlur('userName')}
+                    />
 
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-                style={styles.textInput}
-                value={password}
-                onChangeText={(value) => setPassword(value)}
-                accessibilityLabel="Password"
-                textContentType="password"
-                secureTextEntry={true}
-            ></TextInput>
+                    <TextInput
+                        variant="standard"
+                        value={values.email}
+                        style={commonStyles.textInput}
+                        color={commonStyles.colors.color}
+                        trailing={<Icon name="at" />}
+                        onChangeText={handleChange('email')}
+                        onBlur={handleBlur('email')}
+                    />
 
-            <Text style={styles.label}>Confirm password</Text>
-            <TextInput
-                style={styles.textInput}
-                value={confirmPassword}
-                onChangeText={(value) => {
-                    setConfirmPassword(value)
-                    validateConfirmPassword()
-                }}
-                accessibilityLabel="Confirm password"
-                textContentType="password"
-                secureTextEntry={true}
-            ></TextInput>
-            <Text style={styles.error}>{confirmPasswordError}</Text>
+                    <TextInput
+                        variant="standard"
+                        value={values.phone}
+                        style={commonStyles.textInput}
+                        color={commonStyles.colors.color}
+                        trailing={<Icon name="phone" />}
+                        onChangeText={handleChange('phone')}
+                        onBlur={handleBlur('phone')}
+                    />
 
-            <Text style={styles.hint}></Text>
+                    <TextInput
+                        variant="standard"
+                        value={values.password}
+                        secureTextEntry={true}
+                        style={commonStyles.textInput}
+                        color={commonStyles.colors.color}
+                        trailing={<Icon name="eye" />}
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                    />
 
-            <Pressable
-                onPress={() => onPressRegister(navigation, email, password)}
-                accessibilityLabel="Sign up to Are you ok"
-                style={styles.button}
-            >
-                <Text style={styles.buttonText}>Register</Text>
-            </Pressable>
-        </View>
+                    {/* <TextInput
+                        variant="standard"
+                        value={values.confirmPassword}
+                        secureTextEntry={true}
+                        style={commonStyles.textInput}
+                        color={commonStyles.colors.color}
+                        trailing={<Icon name="eye" />}
+                        onChangeText={() => {
+                            handleChange('confirmPassword')
+
+                            values.password === values.confirmPassword
+                                ? (values.passwordMatch = true)
+                                : (values.passwordMatch = false)
+                        }}
+                        onBlur={handleBlur('confirmPassword')}
+                    /> */}
+
+                    <Button
+                        onPress={handleSubmit}
+                        title="Register"
+                        style={commonStyles.button}
+                        color="#F454F9"
+                        disabled={!values.passwordMatch}
+                    />
+                </View>
+            )}
+        </Formik>
     )
 }
-
-export default RegisterScreen

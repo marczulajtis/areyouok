@@ -1,74 +1,67 @@
+import { Button, TextInput } from '@react-native-material/core'
+import { Formik } from 'formik'
 import React from 'react'
-import {
-    Alert,
-    Button,
-    Image,
-    Pressable,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from 'react-native'
+import { useForm } from 'react-hook-form'
+import { Image, View } from 'react-native'
+import commonStyles from '../../common/common-styles'
 import styles from '../../common/common-styles'
+import { UserLogin } from '../../models/user-login'
+import { signIn } from '../../services/user-service'
+import Icon from '@expo/vector-icons/MaterialCommunityIcons'
 
-const LoginScreen = ({ navigation }) => {
-    const [password, setPassword] = React.useState('')
-    const [email, setEmail] = React.useState('')
+export const LoginScreen = ({ navigation }) => {
+    const { control } = useForm<UserLogin>()
 
-    const validatePassword = () => {
-        console.log('Password validated')
+    const onSubmit = (user: UserLogin) => {
+        signIn(navigation, user.userName, user.password)
     }
 
-    const passwordDefinition = `- At least one digit [0-9] \n
-    - At least one lowercase character [a-z] \n
-    - At least one uppercase character [A-Z] \n
-    - At least one special character [*.!@#$%^&(){}[]:;<>,.?/~_+-=|\] \n
-    - At least 8 characters in length, but no more than 32.`
-
     return (
-        <View style={styles.container}>
-            <Image
-                source={require('../../assets/logo.png')}
-                style={styles.cornerImage}
-                resizeMode="cover"
-            ></Image>
+        <Formik
+            initialValues={{
+                userName: '',
+                password: '',
+            }}
+            onSubmit={(user) => onSubmit(user)}
+        >
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+                <View style={styles.container}>
+                    <Image
+                        source={require('../../assets/logo.png')}
+                        style={styles.cornerImage}
+                        resizeMode="cover"
+                    />
 
-            <Text style={styles.label}>E-mail address</Text>
-            <TextInput
-                style={styles.textInput}
-                value={email}
-                onChangeText={(value) => setEmail(value)}
-                accessibilityLabel="E-mail address"
-            ></TextInput>
+                    <TextInput
+                        variant="standard"
+                        value={values.userName}
+                        style={commonStyles.textInput}
+                        color={commonStyles.colors.color}
+                        trailing={<Icon name="account" />}
+                        onChangeText={handleChange('userName')}
+                        onBlur={handleBlur('userName')}
+                    />
 
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-                style={styles.textInput}
-                value={password}
-                onChangeText={(value) => setPassword(value)}
-                accessibilityLabel="Password"
-                textContentType="password"
-                secureTextEntry={true}
-            ></TextInput>
-            <Pressable
-                onPress={() =>
-                    Alert.alert(
-                        'Forgot password pressed\n' + email + '\n' + password
-                    )
-                }
-            >
-                <Text style={styles.forgotPassBtn}></Text>
-            </Pressable>
+                    <TextInput
+                        variant="standard"
+                        value={values.password}
+                        style={commonStyles.textInput}
+                        color={commonStyles.colors.color}
+                        trailing={<Icon name="eye" />}
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        secureTextEntry={true}
+                    />
 
-            <Pressable
-                onPress={() => UserService.login()}
-                accessibilityLabel="Log in to Are you ok"
-                style={styles.button}
-            >
-                <Text style={styles.buttonText}>Log in</Text>
-            </Pressable>
-        </View>
+                    <Button
+                        onPress={handleSubmit}
+                        accessibilityLabel="Log in to Are you ok"
+                        style={styles.button}
+                        title="Login"
+                        color="#F454F9"
+                    />
+                </View>
+            )}
+        </Formik>
     )
 }
-
-export default LoginScreen
