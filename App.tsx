@@ -1,9 +1,5 @@
-import { AlegreyaSans_700Bold } from '@expo-google-fonts/alegreya-sans'
-import { useFonts } from 'expo-font'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
-import * as Font from 'expo-font'
-import { Alegreya_400Regular } from '@expo-google-fonts/dev'
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
@@ -22,19 +18,9 @@ export default function App() {
 
     const [appIsReady, setAppIsReady] = useState(false)
 
-    const customFonts = {
-        'alegreya-regular': Alegreya_400Regular,
-    }
-
-    let [fontsLoaded] = useFonts({
-        AlegreyaSans_700Bold,
-    })
-
     useEffect(() => {
         async function prepare() {
             try {
-                await Font.loadAsync(customFonts)
-
                 await new Promise((resolve) => setTimeout(resolve, 2000))
             } catch (e) {
                 console.warn(e)
@@ -45,10 +31,6 @@ export default function App() {
 
         prepare()
     }, [])
-
-    if (!fontsLoaded) {
-        return null
-    }
 
     if (appIsReady) {
         return (
@@ -82,7 +64,6 @@ const styles = StyleSheet.create({
         color: '#FFD7D2',
         textAlign: 'center',
         fontSize: 20,
-        fontFamily: 'alegreya-regular',
         fontWeight: 'bold',
         textDecorationLine: 'underline',
     },

@@ -30,19 +30,16 @@ export default StyleSheet.create({
     hint: {
         fontSize: 10,
         textAlign: 'left',
-        fontFamily: 'alegreya-regular',
     },
     label: {
         textAlign: 'left',
         width: 200,
         fontSize: 15,
-        fontFamily: 'alegreya-regular',
         color: '#737373',
     },
     error: {
         color: '#F48CA7',
         fontWeight: 'bold',
-        fontFamily: 'alegreya-regular',
     },
     cornerImage: {
         height: 50,
@@ -56,6 +53,5 @@ export default StyleSheet.create({
         textDecorationLine: 'underline',
         textAlign: 'left',
         fontSize: 10,
-        fontFamily: 'alegreya-regular',
     },
 })

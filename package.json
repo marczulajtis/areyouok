@@ -14,7 +14,6 @@
         "@babel/runtime": "^7.20.13",
         "@emotion/react": "^11.10.5",
         "@emotion/styled": "^11.10.5",
-        "@expo-google-fonts/alegreya-sans": "^0.2.2",
         "@expo-google-fonts/dev": "^0.2.2",
         "@expo-google-fonts/inter": "^0.2.2",
         "@expo/vector-icons": "^13.0.0",
